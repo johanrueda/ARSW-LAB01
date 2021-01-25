@@ -1,4 +1,4 @@
-
+﻿
 ### Escuela Colombiana de Ingeniería
 ### Arquitecturas de Software - ARSW
 ## Ejercicio Introducción al paralelismo - Hilos - Caso BlackListSearch
@@ -11,7 +11,11 @@
 
 ### Descripción
   Este ejercicio contiene una introducción a la programación con hilos en Java, además de la aplicación a un caso concreto.
-  
+
+### Integrantes:
+Johan David Rueda
+Adriana Marcela Castañeda
+
 
 **Parte I - Introducción a Hilos en Java**
 
@@ -20,7 +24,11 @@
 	1. Cree 3 hilos de tipo CountThread, asignándole al primero el intervalo [0..99], al segundo [99..199], y al tercero [200..299].
 	2. Inicie los tres hilos con 'start()'.
 	3. Ejecute y revise la salida por pantalla. 
-	4. Cambie el incio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
+	4. Cambie el inicio con 'start()' por 'run()'. ¿Cómo cambia la salida?, por qué? 
+
+Los datos de salida cambian de orden, al usar start() los números salían en desorden y al usar run() los números salían en el orden en el que se ejecutaron los hilos. 
+
+Esto se presenta ya que al usar start() llama al método run() para cada uno de los procesos por lo que estos se ejecutan en paralelo, al usar run() los procesos se generan secuencialmente por lo que las respuestas se imprimirán en este mismo orden.
 
 **Parte II - Ejercicio Black List Search**
 
@@ -84,6 +92,7 @@ Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tie
 2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
 
 3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
+
 
 
 
