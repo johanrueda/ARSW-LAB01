@@ -10,25 +10,38 @@
 *  [Threads vs Processes]( http://cs-fundamentals.com/tech-interview/java/differences-between-thread-and-process-in-java.php)
 
 ### Descripción
-  Este ejercicio contiene una introducción a la programación con hilos en Java, además de la aplicación a un caso concreto.
+Este ejercicio contiene una introducción a la programación con hilos en Java, además de la aplicación a un caso concreto.
 
 ### Integrantes:
-Johan David Rueda
-Adriana Marcela Castañeda
-
-
+* Johan David Rueda
+* Adriana Marcela Castañeda  
+  
+>  
 **Parte I - Introducción a Hilos en Java**
 
-1. De acuerdo con lo revisado en las lecturas, complete las clases CountThread, para que las mismas definan el ciclo de vida de un hilo que imprima por pantalla los números entre A y B.
-2. Complete el método __main__ de la clase CountMainThreads para que:
+**1.** De acuerdo con lo revisado en las lecturas, complete las clases CountThread, para que las mismas definan el ciclo de vida de un hilo que imprima por pantalla los números entre A y B.
+
+![](ARSW-LAB01/img/Parte1_1.PNG)
+
+**2.** Complete el método __main__ de la clase CountMainThreads para que:
 	1. Cree 3 hilos de tipo CountThread, asignándole al primero el intervalo [0..99], al segundo [99..199], y al tercero [200..299].
 	2. Inicie los tres hilos con 'start()'.
 	3. Ejecute y revise la salida por pantalla. 
-	4. Cambie el inicio con 'start()' por 'run()'. ¿Cómo cambia la salida?, por qué? 
+	4. Cambie el inicio con 'start()' por 'run()'. ¿Cómo cambia la salida?¿por qué? 
 
-Los datos de salida cambian de orden, al usar start() los números salían en desorden y al usar run() los números salían en el orden en el que se ejecutaron los hilos. 
+**start()**
 
-Esto se presenta ya que al usar start() llama al método run() para cada uno de los procesos por lo que estos se ejecutan en paralelo, al usar run() los procesos se generan secuencialmente por lo que las respuestas se imprimirán en este mismo orden.
+![](ARSW-LAB01/img/Parte1_4.PNG)
+![](ARSW-LAB01/img/Parte1_5.PNG)
+
+**run()**
+
+![](ARSW-LAB01/img/Parte1_2.PNG)
+![](ARSW-LAB01/img/Parte1_3.PNG)
+
+**Los datos de salida cambian de orden, al usar _start()_ los números salían en desorden y al usar _run()_ los números salían en el orden en el que se ejecutaron los hilos.**
+
+**Esto se presenta ya que al usar _start()_ llama al método _run()_ para cada uno, por lo que estos se ejecutan en paralelo, al usar _run()_ se ejecutan secuencialmente por lo que las respuestas se imprimirán en este mismo orden.**
 
 **Parte II - Ejercicio Black List Search**
 
@@ -41,7 +54,7 @@ Dicho componente está diseñado de acuerdo con el siguiente diagrama, donde:
 
 - HostBlackListsValidator es una clase que ofrece el método 'checkHost', el cual, a través de la clase 'HostBlackListDataSourceFacade', valida en cada una de las listas negras un host determinado. En dicho método está considerada la política de que al encontrarse un HOST en al menos cinco listas negras, el mismo será registrado como 'no confiable', o como 'confiable' en caso contrario. Adicionalmente, retornará la lista de los números de las 'listas negras' en donde se encontró registrado el HOST.
 
-![](img/Model.png)
+![](ARSW-LAB01/img/Model.png)
 
 Al usarse el módulo, la evidencia de que se hizo el registro como 'confiable' o 'no confiable' se dá por lo mensajes de LOGs:
 
@@ -67,7 +80,9 @@ Para 'refactorizar' este código, y hacer que explote la capacidad multi-núcleo
 
 **Parte II.I Para discutir la próxima clase (NO para implementar aún)**
 
-La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema?
+La estrategia de paralelismo antes implementada es ineficiente en ciertos casos, pues la búsqueda se sigue realizando aún cuando los N hilos (en su conjunto) ya hayan encontrado el número mínimo de ocurrencias requeridas para reportar al servidor como malicioso. Cómo se podría modificar la implementación para minimizar el número de consultas en estos casos?, qué elemento nuevo traería esto al problema? 
+
+**Se podrían modifficar el número de consultas si los hilos comparten la variable de ocurrencias, y se va verificando el estado de esta a lo largo del proceso, de tal forma que cuando se complete el número de apariciones límite este se pueda reportar y la ejecución de los hilos finalice.**
 
 **Parte III - Evaluación de Desempeño**
 
@@ -79,20 +94,23 @@ A partir de lo anterior, implemente la siguiente secuencia de experimentos para 
 4. 50 hilos.
 5. 100 hilos.
 
-Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![](img/jvisualvm.png)
+Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![]( ARSW-LAB01/img/jvisualvm.png)
 
 Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
 
 
+**1.** Según la [ley de Amdahls](https://www.pugetsystems.com/labs/articles/Estimating-CPU-Performance-using-Amdahls-Law-619/#WhatisAmdahlsLaw?):
 
-1. Según la [ley de Amdahls](https://www.pugetsystems.com/labs/articles/Estimating-CPU-Performance-using-Amdahls-Law-619/#WhatisAmdahlsLaw?):
+	![]( ARSW-LAB01/img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?. 
 
-	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?. 
+**El mejor desempeño se logra al usar 200 hilos, esto ya que al crear una mayor cantidad de hilos se requiere el uso de más recursos para realizar su sincronización y el equipo no tiene la capacidad suficiente, por lo que debe ir pausando algunos hilos y reanudando otros**
 
-2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
+**2.** Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
 
-3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
+**Al usar el doble de nucleos el tiempo de ejecución se reduce a casi la mitad**
 
+**3.** De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
 
+**Mejoraría al usar c hilos en 100/c maquinas distribuidas, ya que de esta forma se aprovecharía al máximo cada núcleo de los computadores y adicionalmente se reducirían los costos.**
 
 
